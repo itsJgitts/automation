@@ -5,6 +5,7 @@ export class menuHelper {
   readonly brand: Locator;
   readonly homeNavlink: Locator;
   readonly resourcesNavlink: Locator;
+  readonly currentUrl: string;
 
 
   constructor(page: Page) {
@@ -12,6 +13,7 @@ export class menuHelper {
     this.brand = page.locator('.navbar-brand');
     this.homeNavlink = page.locator('.nav-link:has-text("Home")');
     this.resourcesNavlink = page.locator('.nav-link:has-text("Resources")');
+    this.currentUrl = page.url()
   }
 
   async verifyNavbar() {
@@ -20,6 +22,13 @@ export class menuHelper {
     await expect(this.homeNavlink).toHaveAttribute('href', '/home');
     await expect(this.resourcesNavlink).toBeVisible();
     await expect(this.resourcesNavlink).toHaveAttribute('href', '/resources');
+  }
+
+
+  async navToResources() {
+    await this.resourcesNavlink.click();
+    await expect(this.page).toHaveURL('/resources');
+
   }
 
 }
