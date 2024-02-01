@@ -14,10 +14,6 @@ export class menuHelper {
     this.resourcesNavlink = page.locator('.nav-link:has-text("Resources")');
   }
 
-  async goToHomepage() {
-    await this.page.goto('/');
-  }
-
   async verifyNavbar() {
     await expect(this.brand).toBeVisible();
     await expect(this.homeNavlink).toBeVisible();
