@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page, type test } from '@playwright/test';
 
 export class generalHelper {
   readonly page: Page;
@@ -10,6 +10,15 @@ export class generalHelper {
 
   async goToHomepage() {
     await this.page.goto('/');
+  }
+
+
+  async screenshotOnFail(testInfo) {
+    if (testInfo.status !== testInfo.expectedStatus) {
+        const screenshotPath = testInfo.outputPath(`failure.png`);
+        testInfo.attachments.push({ name: 'screenshot', path: screenshotPath, contentType: 'image/png' });
+        await this.page.screenshot({ path: screenshotPath, timeout: 5000 });
+      }
   }
 
 }
