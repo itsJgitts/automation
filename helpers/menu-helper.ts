@@ -1,4 +1,5 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect } from 'playwright/test';
+import { Page, Locator} from 'playwright';
 
 export class menuHelper {
   readonly page: Page;

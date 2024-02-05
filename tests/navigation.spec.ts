@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from 'playwright/test';
 import { menuHelper } from '../helpers/menu-helper';
 import { generalHelper } from '../helpers/general-helper';
 
