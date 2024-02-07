@@ -1,4 +1,5 @@
 import { Page } from 'playwright';
+import { VIEWPORTS } from '../config/viewConfig';
 
 export class generalHelper {
   readonly page: Page;

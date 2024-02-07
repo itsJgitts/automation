@@ -26,6 +26,18 @@ export class menuHelper {
   }
 
 
+  // const navItems = {
+  //   nav1: { name: 'About CP', href: '/about-cp' },
+  //   nav2: { name: 'Information Resources', href: '/info-resources' },
+  //   nav3: { name: 'About My CP Guide', href: '/about-us' }
+  // }
+  // await expect(
+  //   page.locator('div[role="navigation"]').getByRole('link', { name: navItems.nav1.name })
+  // ).toHaveAttribute('href', navItems.nav1.href)
+  // await expect(
+  //   page.locator('div[role="navigation"]').getByRole('link', { name: navItems.nav2.name })
+  // ).toHaveAttribute('href', navItems.nav2.href)
+
   async navToResources() {
     await this.resourcesNavlink.click();
     await expect(this.page).toHaveURL('/resources');
