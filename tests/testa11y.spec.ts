@@ -1,37 +1,29 @@
-import { test } from 'playwright/test';
+import { test, expect } from 'playwright/test';
 import { generalHelper } from '../helpers/general-helper';
-import { injectAxe, checkA11y } from 'axe-playwright';
-import { Browser, Page, chromium  } from 'playwright';
-import { a11yConfig } from '../config/a11yconfig';
-
-let browser: Browser;
-let newPage: Page;
-
-test.beforeEach(async ({page}) => {
-    const general = new generalHelper(page);
-
-    browser = await chromium.launch()
-    newPage = await browser.newPage()
-    await general.goToHomepage();
-    await injectAxe(newPage)
-})
+import { AxeBuilder } from '@axe-core/playwright';
+import { VIEWPORTS } from '../config/a11yconfig';
 
 test.afterEach(async ({ page }, testInfo) => {
     const general = new generalHelper(page);
     await general.screenshotOnFail(testInfo)
 });
-      
-test('Test accessibility on homepage', async ({ page }) => {
+
+
+test('Tests homepage for accessiblity', async ({ page }, testInfo) => {
     const general = new generalHelper(page);
-    
+
     await general.goToHomepage();
-    await checkA11y(newPage, a11yConfig)
-});
+    page.setViewportSize(VIEWPORTS.small)
+    const accessibilityScanResults = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag21a', 'wcag2aa', 'wcag21aa'])
+        .options({ reporter: "no-passes" })
+        .analyze();
 
-
-
-test.afterEach(async ({ page }, testInfo) => {
-  const general = new generalHelper(page);
-  await general.screenshotOnFail(testInfo)
-});
+    await testInfo.attach('accessibility-scan-results', {
+        body: JSON.stringify(accessibilityScanResults, null, 2),
+        contentType: 'application/json'
+      });
+      
+    expect(accessibilityScanResults.violations).toEqual([]);
+  });
 
