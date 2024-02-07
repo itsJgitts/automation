@@ -1,29 +1,27 @@
-import { test, expect } from 'playwright/test';
+import { test } from 'playwright/test';
 import { generalHelper } from '../helpers/general-helper';
-import { AxeBuilder } from '@axe-core/playwright';
-import { VIEWPORTS } from '../config/a11yconfig';
+import { a11yHelper } from '../helpers/a11y-helper';
+
 
 test.afterEach(async ({ page }, testInfo) => {
     const general = new generalHelper(page);
     await general.screenshotOnFail(testInfo)
 });
 
+test('Tests homepage for accessiblity on mobile', async ({ page }, testInfo) => {
+  const general = new generalHelper(page);
+  const a11y = new a11yHelper(page);
 
-test('Tests homepage for accessiblity', async ({ page }, testInfo) => {
-    const general = new generalHelper(page);
+  await general.goToHomepage();
+  await a11y.a11yMobile(page, testInfo)
 
-    await general.goToHomepage();
-    page.setViewportSize(VIEWPORTS.small)
-    const accessibilityScanResults = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag21a', 'wcag2aa', 'wcag21aa'])
-        .options({ reporter: "no-passes" })
-        .analyze();
+});
 
-    await testInfo.attach('accessibility-scan-results', {
-        body: JSON.stringify(accessibilityScanResults, null, 2),
-        contentType: 'application/json'
-      });
-      
-    expect(accessibilityScanResults.violations).toEqual([]);
-  });
+test('Tests homepage for accessiblity on desktop', async ({ page }, testInfo) => {
+  const general = new generalHelper(page);
+  const a11y = new a11yHelper(page);
 
+  await general.goToHomepage();
+  await a11y.a11yDesktop(page, testInfo)
+
+});
