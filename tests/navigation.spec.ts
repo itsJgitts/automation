@@ -21,6 +21,5 @@ test('Verify user can go to resources', async ({ page }) => {
 
   await general.goToHomepage();
   await menu.navToResources();
-  await page.locator('.fail').click();
  
 });
